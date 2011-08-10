@@ -1,0 +1,21 @@
+This program plays a small sound sample. The sample is 8-bit mono.
+
+The yellow area is the sample, and is the editable area. Click to edit this. The derivative is drawn underneath in green.
+
+Left click to set the value at that point. Middle click to set a that value and also the nearby values. Right click to introduce noise.
+
+By default, the sample will be smoothed automatically. Press 's' to disable this, and 'd' to continue autosmoothing.
+
+
+
+'b'         (tap)    resets
+'s'         (hold)   manual smooth/autosmooth stop
+'d'         (tap)    autosmooth start
+'<', '>'    (mash)   adjust smooth speed
+'m'         (tap)    mute
+'q'         (tap)    quit
+'l'         (hold)   Draws a line. Hold left click, hold l, drag to where you want go go, release l.
+'i'         (tap)    Load sample from filename given on STDIN
+'o'         (tap)    Write sample to filename given on STDIN
+
+
