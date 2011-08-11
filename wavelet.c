@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <string.h>
+#include <unistd.h>
 #include <readline/readline.h>
 
 #include <SDL/SDL.h>
@@ -24,7 +25,7 @@ int drawline = 0;
 
 void draw_derivative() {
   for (int i = 1; i < LENGTH - 1; i++) {
-    pixelRGBA(screen, BORDER+LENGTH*(0.5)+i, BORDER+RANGE-abs(data[i]-data[i+1]), 0x00, 0x80, 0x00, 0xFF);
+    pixelRGBA(screen, BORDER+LENGTH*(0.5)+i, BORDER+RANGE-2*abs(data[i]-data[i+1]), 0x00, 0xC0, 0x00, 0xDD);
   }
 }
 
@@ -55,9 +56,9 @@ void draw_line() {
 
 void draw() {
   SDL_FillRect(screen, NULL, 0);
-  draw_derivative();
   draw_shadow();
   draw_data();
+  draw_derivative();
   draw_line();
 
   rectangleRGBA(screen, 0, 0, BORDER+LENGTH*2, BORDER+RANGE, 0xFF, 0x00, 0x00, 0xFF);
@@ -250,12 +251,19 @@ void loopdy_loop() {
           blank();
           need_draw = 1;
         }
+        int pspeed = 0;
         if (event.key.keysym.unicode == L'>') {
-          timer_interval = timer_interval > 1 ? timer_interval - 1 : 1;
-          printf("Smooth speed: %i\n", (int)timer_interval);
+          timer_interval = (timer_interval - 1)*0.9;
+          if (timer_interval < 1) {
+            timer_interval = 1;
+          }
+          pspeed = 1;
         }
         if (event.key.keysym.unicode == L'<') {
-          timer_interval++;
+          timer_interval = (timer_interval + 1)*(1.1);
+          pspeed = 1;
+        }
+        if (pspeed) {
           printf("Smooth speed: %i\n", (int)timer_interval);
         }
         if (event.key.keysym.sym == SDLK_i) {
@@ -372,6 +380,7 @@ int main() {
 
   loopdy_loop();
   printf("Goodbye\n");
+  //setsid(); //setpgrp();
   SDL_QuitSubSystem(SDL_INIT_VIDEO); //ending audio takes like 3 seconds. On my computer, anyways.  Maybe disown ourselves?
   SDL_PauseAudio(1);
 
