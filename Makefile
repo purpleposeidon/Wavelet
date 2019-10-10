@@ -8,7 +8,7 @@ LIBS = -lSDL -lSDL_gfx -lreadline
 all: wavelet
 
 wavelet: wavelet.c
-	$(CC) $(FLAGS) $(LIBS) -o $@ wavelet.c
+	$(CC) wavelet.c $(FLAGS) $(LIBS) -o $@
 
 wavelet.c: .PHONY
 
